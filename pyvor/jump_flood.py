@@ -6,11 +6,11 @@ import time
 from numpy import mat
 
 
-def razdalja(prva, druga):
+def k_ta_razdalja(prva, druga, k=2):
     """
     Vrne razdaljo prve tocke do druge
     """
-    return math.sqrt((druga[0] - prva[0])**2 + (druga[1] - prva[1])**2)
+    return (abs((druga[0] - prva[0]))**k + abs((druga[1] - prva[1]))**k) ** (1/k)
 
 def manhattanRazdalja(prva, druga):
     """
@@ -49,7 +49,7 @@ def vornoi_jump_flood(semena, velikost):
                         nova_tabela.append([premik_x, premik_y])
                     else:
                         #Pogledamo ce je ta tocka blizje nasi izvirni ali tisti, s kero barvo je trenutno oznacena
-                        if razdalja(semena[matrika[x][y]], [premik_x, premik_y]) < razdalja([premik_x, premik_y], semena[matrika[premik_x][premik_y]]):
+                        if k_ta_razdalja(semena[matrika[x][y]], [premik_x, premik_y], 1/2) < k_ta_razdalja([premik_x, premik_y], semena[matrika[premik_x][premik_y]], 1/2):
                             matrika[premik_x][premik_y] = matrika[x][y]
 
         tabela_semen = nova_tabela
@@ -77,7 +77,7 @@ def narisi(semena, matrika):
     pyplot.show()
 
 
-velikost_platna = 100
+velikost_platna = 1000
 st_semen = 15
 semena = generator_semen(velikost_platna, st_semen)
 
