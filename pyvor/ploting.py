@@ -13,6 +13,22 @@ def PlotPoints(point):
     pyplot.scatter(coords_x, coords_y)
     pyplot.show()
 
+def PlotConnectedPoints(points):
+    """
+    Plots all points and their connections
+    """
+    coords_x = list()
+    coords_y = list()
+    for point in points:
+        coords_x.append(point.x)
+        coords_y.append(point.y)
+        pyplot.scatter(point.x, point.y)
+        for conn in point.connections:
+            pyplot.plot([point.x, conn.x], [point.y, conn.y])
+
+    pyplot.scatter(coords_x, coords_y)
+    pyplot.show()
+
 def PlotTriangles(triangles):
     """
     Plots all triangles

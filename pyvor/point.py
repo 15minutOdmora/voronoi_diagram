@@ -3,10 +3,10 @@ class Point:
     class for points
     """
 
-    def __init__(self, x, y, connections=list()):
+    def __init__(self, x, y):
         self._x = x
         self._y = y
-        self._connections = connections
+        self._connections = list()
 
     #getters and setters
     @property
@@ -36,6 +36,12 @@ class Point:
     @connections.setter
     def connections(self, value):
         self._connections = value
+    
+    def __str__(self):
+        return f"({self.x}, {self.y})"
+    
+    def __repr__(self):
+        return f"({self.x}, {self.y})"
 
     
     def AddConnection(self, point):
