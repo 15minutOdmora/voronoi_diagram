@@ -3,8 +3,6 @@ from matplotlib import pyplot
 import math, random
 import time
 
-from numpy import mat
-
 
 def k_ta_razdalja(prva, druga, k=2):
     """
