@@ -43,12 +43,28 @@ class Point:
     def __repr__(self):
         return f"({self.x}, {self.y})"
 
+    def GetCoords(self):
+        """
+        Returns both x and y in a list
+        """
+        return [self.x, self.y]
     
     def AddConnection(self, point):
         """
         Adds point to connections
         """
         self._connections.append(point)
+
+    def RemoveConnection(self, point):
+        """
+        Removes connection from a point
+        """
+        for i, conn in enumerate(self.connections):
+            if conn.x == point.x and conn.y == point.y:
+                self.connections.pop(i)
+                #we delete connection from both sides
+                conn.RemoveConnection(self)
+        
 
     
 

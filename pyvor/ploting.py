@@ -29,6 +29,7 @@ def PlotConnectedPoints(points):
     pyplot.scatter(coords_x, coords_y)
     pyplot.show()
 
+
 def PlotTriangles(triangles):
     """
     Plots all triangles

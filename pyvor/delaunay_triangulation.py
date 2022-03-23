@@ -1,3 +1,5 @@
+from cgi import test
+from sys import api_version
 from point import Point
 from triangle import Triangle
 from ploting import PlotPoints, PlotTriangles, PlotConnectedPoints
@@ -10,6 +12,26 @@ def OrderPoints(points):
     """
     #TODO Implement it
     raise NotImplementedError("Not yet implemented")
+
+def CheckIfIntersects(point1, point2, point3, point4):
+    """
+    Check if line from point1 to point2 intersects with line from point3 to point4
+    """
+    x1, y1 = point1.GetCoords()
+    x2, y2 = point2.GetCoords()
+    x3, y3 = point3.GetCoords()
+    x4, y4 = point4.GetCoords()
+
+    #missing check if one line is on another!!!
+    d = ((y2 - y1) * (x3 - x4) - (x2 - x1) * (y3 - y4))
+    if d == 0:
+        #Intersection doesnt exist
+        return False
+
+    alpha = ((y3 - y4) * (x1 - x3) - (x3 - x4) * (y1 - y3)) / d
+
+    beta = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / d
+    return 0 < alpha < 1 and 0 < beta < 1
 
 def RecursiveDivide(points):
     """
@@ -30,8 +52,17 @@ def RecursiveDivide(points):
     else:
         #we divide in half, first half will be bigger if odd number
         n = math.ceil(len(points) / 2)
-        RecursiveDivide(points[0:n])
-        RecursiveDivide(points[n:])
+        #LL
+        left_cell = points[0:n]
+        #RR
+        right_cell = points[n:]
+
+        #Recursively divide and connect when only 2 or 3 points
+        RecursiveDivide(left_cell)
+        RecursiveDivide(right_cell)
+
+
+
 
 
 
@@ -50,8 +81,8 @@ testne_tocke.append(Point(6, 4))
 
 #PlotPoints(testne_tocke)
 
+print(CheckIfIntersects(Point(1, 1), Point(1, 4), Point(1, 2), Point(1, 3)))
+
 RecursiveDivide(testne_tocke)
-for tocka in testne_tocke:
-    print(tocka.connections)
 
 PlotConnectedPoints(testne_tocke)
