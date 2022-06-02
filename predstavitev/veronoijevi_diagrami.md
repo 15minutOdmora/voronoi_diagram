@@ -2,7 +2,24 @@
 
 # Uvod
 
+Voronoijevi diagrami nam predstavljajo neko ravnino razdeljeno na območja. Območja so oblikovana z pomočjo točk, ki jim bomo v nadaljevanju imenovali semena. Vsako seme ima okoli sebe območje, ki vsebuje vse točke, ki so po razdalji najbližje temu semenu. Za lažjo predstavo bodo v vseh slikah vsako območje obarvano z svojo barvo. 
+
+V nadaljevanju si bomo pogledali tri različne načine z katerimi pridemo do Voronoijevih diagramov. Prvi način bo z naivno oziroma brute force metodo, drugi pa z izboljšavo prve metode. Tretji način pa bo tako imenovana Delaunayova triangulacija, ki pa je čisto svoj algoritem. Izkaže se, da ko dobimo triangulacijo in naredimo njen dual, dobimo ravno Voronoijeve diagrame.
+
+Delaunayeva triangulacija se tudi v današnjem času uporablja v računalniški grafiki, saj nam pomaga razdeliti neko ploskev na skupek trikotnikov. Današnje grafične kartice so narejene tako, da prikazujejo oblike sestavljene iz trikotnikov in ravno za to je Delaunayeva triangulacija zelo uporabna.
+
+Za lažjo predstavo, si lahko pogledamo naslednjo sliko, kjer imamo ravnino velikosti 1000 x 1000 in 100 semen. Voronoijev diagram bi izgledal sledeče:
+
+![Izgled Voronoievega diagrama](slike/zgledi/Primer_evklidska.png)
+
 # Zgodovina
+
+Ideja o Voronoijevih diagramih se je v zgodovini večkrat pojavila, prvi pa jih je definiral Georgy Feodosevich Voronoy, ki je leta 1908 objavil študijo o n-dimenzionalnih Voronoijevih diagramih. Voronoy, se je rodil leta 1868 in je že v srednji šoli napisal svoj prvi matematični članek in že takrat je začel sodelovati z različnimi profesorji.
+
+# Brute force metoda
+
+ Ideja brute force metode že po imenu pove, da bo zelo potratna, a bo preprosta za razumeti. Vzamimo za primer ravnino iz $N * N$ točk na kateri je $M$ semen. Za vsako točko na ravnini pogledamo razdaljo do vseh $M$ semen in najdemo tisto seme, kateri je najbližje. Tako na koncu vemo, h katerem semenu spada ta točka in jo pobarvamo z njegovo barvo. Potem nadaljujemo z računanjem razdalj na naslednji točki.
+ Že kratek opis nam pove, da je dela ogromno, saj je potrebno izračunati $M$ razdalj za vsako točko in le teh je $N * N$. Tako je časovna zahtevnost danega algoritma $O(N^2 * M)$
 
 # Jump Flood algoritem
 
