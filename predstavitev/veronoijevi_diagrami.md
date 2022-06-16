@@ -18,10 +18,53 @@ Ideja o Voronoijevih diagramih se je v zgodovini večkrat pojavila, prvi pa jih 
 
 # Brute force metoda
 
- Ideja brute force metode že po imenu pove, da bo zelo potratna, a bo preprosta za razumeti. Vzamimo za primer ravnino iz $N * N$ točk na kateri je $M$ semen. Za vsako točko na ravnini pogledamo razdaljo do vseh $M$ semen in najdemo tisto seme, kateri je najbližje. Tako na koncu vemo, h katerem semenu spada ta točka in jo pobarvamo z njegovo barvo. Potem nadaljujemo z računanjem razdalj na naslednji točki.
+ Ideja brute force metode že po imenu pove, da bo zelo potratna, a bo preprosta za razumeti. Vzemimo za primer ravnino iz $N * N$ točk na kateri je $M$ semen. Za vsako točko na ravnini pogledamo razdaljo do vseh $M$ semen in najdemo tisto seme, kateri je najbližje. N koncu vemo, h katerem semenu spada ta točka in jo pobarvamo z njegovo barvo. Potem nadaljujemo z računanjem razdalj na naslednji točki.
  Že kratek opis nam pove, da je dela ogromno, saj je potrebno izračunati $M$ razdalj za vsako točko in le teh je $N * N$. Tako je časovna zahtevnost danega algoritma $O(N^2 * M)$
 
 # Jump Flood algoritem
+
+Pri tem algoritmu bomo delovali ravno nasprotno kot pri Brute force, saj se ne bomo premikali, po še ne pobarvanih točkah ampak bomo začeli barvati iz semen in tako, po večih iteracijah pridemo do enakega rezultata. Že v naprej opozorilo, da algoritem ne deluje 100% natančno, saj z tem ko pohitrimo delovanje izgubimo na natančnosti. Ko spoznamo algoritem si bomo pogledali tudi, kako se lotimo tudi napak.
+
+Ponovno imamo $N * N$ mrežo in pa $M$ semen. Za naš algoritem, je potrebno definirati še korak K:\
+$K \in \{N/2, N/4, ..., 1\} - korak$\
+Kot je razvidno, se bo ta korak v vsaki iteraciji zmanjšal za polovico, dokler ne pride do $1$.\
+Algoritem bo deloval tako, da se bomo v eni iteraciji sprehodili čez vse semena in pogledali njihove sosede. Pri tem bomo sosede $Q$ določali na način: \
+$Q = (x+i, y+j),\ kjer\ sta\ i,\ j \in \{-k, 0, k\}$\
+To pomeni, da iz vsakega semena pogledamo 8 smeri. Seveda, če z korakom pridemo izven naših meja tistega soseda izpustimo.
+
+Ko obravnavamo soseda se lahko pojavita dve možnosti in sicer, da je že pobarvan ali pa ne.\
+$Q$ še nima barve $\Rightarrow$ Pobarvamo ga z barvo, ki jo ima trenutno seme. $Q$ dodamo med semena, in ga bomo tako v naslednji operaciji upoštevali kot seme.
+
+$Q$ že ima barvo $\Rightarrow$ primerjamo razdaljo med trenutnim semenom in sosedom, in pa razdaljo med sosedom in tistim semenom, h kateremu trenutno spada sosed. Če je razdalja trenutnega semena in soseda manjša od druge, soseda prebarvamo z barvo semena, ki ga trenutno obravnamavo.
+
+Z tem algoritmom pridemo do časovne zahtevnosti $O(N^2 * Log_{2}N)$. Če primerjamo časovno zahtevnost z brute force metodo, vidimo, da imamo enkrat $N^2$ množen z $M$ drugič pa z $Log_{2}N$. Tako je razvidno, da bi pri majhnem številu semen hitreje dobili rezultat z brute force metodo, vendar pa ko se število semen poveča, z Jump Flood algoritmom pospešimo delovanje.
+
+## Primer 1:
+
+![Korak 1](slike/prikaz_jump_flooda/JF_1.png)
+![Korak 2](slike/prikaz_jump_flooda/JF_2.png)
+![Korak 3](slike/prikaz_jump_flooda/JF_3.png)
+![Korak 4](slike/prikaz_jump_flooda/JF_4.png)
+
+## Primer 2:
+
+![Korak 1](slike/prikaz_jump_flooda/JF2_1.png)
+![Korak 2](slike/prikaz_jump_flooda/JF2_2.png)
+![Korak 3](slike/prikaz_jump_flooda/JF2_3.png)
+![Korak 4](slike/prikaz_jump_flooda/JF2_4.png)
+![Korak 5](slike/prikaz_jump_flooda/JF2_5.png)
+
+### Napake in različice jump flood algoritma
+
+Pri jump flood algoritmu, pa zaradi preskakovanja pride tudi do napak. V večini primerov, so te zanemarljive, saj imamo ponavadi ogromno število točk in semen, in tudi če je kakšna točna napačno označena v celoti ne igra bistvene vloge. Vendar kljub temu obstajajo načini, da število napak še zmanjšamo. Vse nadgradnje algoritma dodajo nek korak med naše osnovne korake $K$ in tako poskrbijo, da se določena območja natančneje pregledajo. Nadgradnje algoritma so naslednje:
+
+- JFA + 1 : $K \in \{N/2, N/4, ..., 1, 1\}$
+- JFA + 2 : $K \in \{N/2, N/4, ..., 1, 2, 1\}$
+- 1 + JFA : $K \in \{1, N/2, N/4, ..., 1\}$
+
+Opazimo, da algoritmi dodajo korak, ki pregleda najbližje sosede ponovno in tako odpravijo napake, ki ležijo ob meji dveh različnih območij. V naslednjem grafu, je razvidno, kako se število napak spreminja glede na število semen.
+
+![Graf napak](slike/prikaz_jump_flooda/graf_napak.png)
 
 # Delaunay triangulacija
 
