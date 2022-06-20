@@ -54,7 +54,7 @@ Z tem algoritmom pridemo do časovne zahtevnosti $O(N^2 * Log_{2}N)$. Če primer
 ![Korak 4](slike/prikaz_jump_flooda/JF2_4.png)
 ![Korak 5](slike/prikaz_jump_flooda/JF2_5.png)
 
-### Napake in različice jump flood algoritma
+## Napake in različice jump flood algoritma
 
 Pri jump flood algoritmu, pa zaradi preskakovanja pride tudi do napak. V večini primerov, so te zanemarljive, saj imamo ponavadi ogromno število točk in semen, in tudi če je kakšna točna napačno označena v celoti ne igra bistvene vloge. Vendar kljub temu obstajajo načini, da število napak še zmanjšamo. Vse nadgradnje algoritma dodajo nek korak med naše osnovne korake $K$ in tako poskrbijo, da se določena območja natančneje pregledajo. Nadgradnje algoritma so naslednje:
 
@@ -216,7 +216,88 @@ Tako dobimo našo končno Delaunajovo triangulacijo:
 
 # Kako povezati točke
 
+Sedaj, ko imamo končno Delaunayevo triangulacijo, pa si poglejmo še postopek, kako iz triangulacije dobimo Voronijev diagram. Postopkov za pridobivanje je več, saj je odvisno, kako je napisana Delaunoyeva triangulacija. Pogledali si bomo dva, ki za rešitev uporabita krožnice, ki si jih ustvarjamo med triangulacijo in si jih lahko že sproti shranjujemo. Za lažjo predstavo si poglejmo sliko, kjer na levi vidimo končno Delaunayevo triangulacijo in dodatno še vse krožnice z njihovimi središči. Na desni strani pa je Voroniev diagram, ki ga dobimo ko povežemo vse točke.
+
+![Dual triangulacije](slike/povezovanje_tock/primer.png)
+
+## Način z povezovanjem sosednjih trikotnikov
+
+Pri tem načinu, si shranjujemo krožnice in pa trikotnike, ki jih ustvarjamo med samim postopkom triangulacije. Potem se lotimo povezovanja po naslednjem postopku. Začeli bomo z enim trikotnikom in poiskali vse sosednje trikotnike, ki imajo eno stranico isto kot naš izbrani. Seveda, lahko najdemo največ tri trikotnike, lahko pa tudi manj. Za vsak sosednji trikotnik, ki ga najdemo povežemo njegovo sredičše krožnice z središčem krožnice trikotnika, kateremu smo iskali sosede. V primeru, da pri enem trikotniku najdemo manj kot tri sosedne, bomo tiste stranice, kjer soseda ni povezali tako, da narišemo simetralo naše stranice, ki bo na eni strani potekala do središča krožnice, na drugi strani pa do konca našega prostora.
+
+Postopek ponavljamo za vse trikotnike in na koncu pridemo do končnega Voronoievega diagrama.
+
+
+## Način z simetralami stranic
+
+Drugi način, pa se razlikuje od prvega po tem, da ne potrebujemo shranjenih nobenih trikotnikov, saj potrebujemo samo končne povezave v triangulaciji in pa središče očrtanih krožnic. Ideja pa je taka, da se sprehodimo čez vse povezave in za vsako naredimo simetralo stranice. Vsaka simetrala pa bo sekala eno ali pa dve središči krožnic, zato postopek ločimo na dve možnosti:
+
+- **Simetrala seka dve središči:** Ohranimo samo del simetrale med obema točkama.
+- **Simetrala seka eno središče:** Ohranimo del simetrale, ki je med središčem in povezavo, kateri simetrala pripada. Prav tako pa na drugi strani naše povezave ohranimo celotno simetralo, ki poteka od povezave pa vse do konca prostora.
+
+Ko postopek ponovimo za vse povezave pridemo ponovno do končnega Voronievega diagrama.
+
 # Primer v drugih metrikah
+
+Kot zanimivost si poglejmo še par zgledov Voronoievih diagramov, pri katerih smo namesto Evklidske razdalje uporabili drugačno:
+
+Najprej pa si še enkrat poglejmo, kako izgleda Voronoiev diagram z navadno Evklidsko metriko.
+
+## Evklidska metrika
+
+$d(A, B) = \sqrt{|a_1 - b_1|^2 + |a_2 - b_2|^2}$
+
+![Evklidska metrika](slike/zgledi/Primer_evklidska.png)
+
+## Manhattan metrika
+
+$d(A, B) = |a_1 - b_1| + |a_2 - b_2|$
+
+![Manhattan metrika](slike/zgledi/Primer_manhattan.png)
+
+## K4 metrika
+
+$d(A, B) = \sqrt[4]{|a_1 - b_1|^4 + |a_2 - b_2|^4}$
+
+![K4 metrika](slike/zgledi/Primer_k4_metrika.png)
+
+## K6 metrika
+
+$d(A, B) = \sqrt[6]{|a_1 - b_1|^6 + |a_2 - b_2|^6}$
+
+![K6 metrika](slike/zgledi/Primer_k6_metrika.png)
+
+## K1/2 metrika
+
+$d(A, B) = \sqrt[1/2]{|a_1 - b_1|^{1/2} + |a_2 - b_2|^{1/2}}$
+
+![K1/2 metrika](slike/zgledi/Primer_kpol_metrika.png)
+
 
 # Primeri uporabe
 
+Voronoievi diagrami se uporabljajo v zelo različnih oblikah in so zelo raziširjeni. Nekatere uporabe je preprosto razumeti, saj takoj vidimo, kako bi jih uporabili, medtem ko so nekatere uporabe zelo kompleksne in jih je težko razumeti. Zato si raje oglejmo nekaj enostavnih:
+
+## Načrtovanje rasti in razvoja gozdov
+V primeru, da na večih mestih zasadimo gozdove, lahko z pomočjo Voronoievih diagramov ugotovimo, kje se bodo gozdovi srečali in kako bo na koncu izgledal skupni gozd. Seveda, nekatere vrste se širijo hitreje kot druge, zato lahko v Voronoijevih diagramih dodamu tudi nekakšne uteži, ki napovejo, kako hitro se širi nek del gozda. To se potem pri računanju razdalj upošteva in lahko vseeno dobimo pravilne izračune.
+
+## Načrtovanje poti v robotiki
+Če pomislimo, da so vsi predmeti v nekem prostoru semena za naš Voronoiev diagram. Končne povezave, ki tvorijo diagram nam opišejo poti, ki so kar se da oddaljene od vseh ovir v prostoru. Če imamo robota, ki bo sledil tem potem, se bo kar se da na široko izognil vsem predmetom, kar zmanjša možnost za trk.
+
+## Najbližna ustanova
+Predstavljamo si, da imamo v nekem mestu več policijskih postaj. Da bi vsaka postaja imela približno enako dela, si lahko z Voronoievimi diagrami pomagamo razdeliti mesto na enaka območja okoli teh postaj in bo tako delo razporejeno kar se da pravično.
+
+Resnična zgodba prihaja iz mesta Melbourne, kjer ima vsak otrok po zakonu zastonj šolanje v ustanovi, ki je najbližje njegovemu prebivališču. Tam so z pomočjo Voronoievih diagramov razdelili mesto in objavili zemljevid, da si lahko starši pogledajo in ugotovijo, v katero šolo naj vpišejo otroka.
+
+## Iskanje najbližjega telefonskega oddajnika
+ Imamo mobilni telefon in želimo kar se da dober telefonski signal. Ena možnost je, da telefon preveri moč signala do vseh oddajnikov, s katerimi ima trenutno stik. Lahko pa ima že v naprej določen zemljevid, kjer so označeni oddajniki in tudi Voronoiev diagram. Potem lahko telefon na podlagi lokacije ugotovi, z katerim oddajnikom naj komunicira, saj mu je ta najbližje oziroma ima za to lokacijo najboljši signal.
+
+# Viri
+https://en.wikipedia.org/wiki/Voronoi_diagram (Dostop: 17.03.2022)
+
+https://en.wikipedia.org/wiki/Jump_flooding_algorithm(Dostop: 17.03.2022)
+
+https://www.wikiwand.com/en/Jump_flooding_algorithm (Dostop: 17.03.2022)
+
+http://www.geom.uiuc.edu/~samuelp/del_project.html#problem (Dostop: 17.03.2022)
+
+https://en.wikipedia.org/wiki/Delaunay_triangulation(Dostop: 17.03.2022)
